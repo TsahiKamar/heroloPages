@@ -1,0 +1,51 @@
+
+<mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>Weather</mat-card-title>
+      <mat-card-subtitle></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+          <!--<button mat-button (click)="newPayment()">חדש</button>-->
+          
+        
+          <section class="example-section">
+            <!--<form [formGroup]="weatherSearchForm" (ngSubmit)="search()">-->
+
+                <form [formGroup]="weatherSearchForm" (ngSubmit)="currentWeatherSearch()" [hidden]="">
+
+            <!--<mat-form-field>
+            <mat-label>תאריך התשלום</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date" id="date" name="date" #dateAmount>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+           
+            <mat-form-field>
+                <mat-label>סכום</mat-label>
+                <input matInput type="number" formControlName="amount" id="amount" name="amount" #inputAmount placeholder="">                
+            </mat-form-field>-->
+
+            <mat-form-field>
+                <mat-label>City</mat-label>
+                <mat-select formControlName="city" id="city" name="type" placeholder="Pls select city">
+                    <mat-option *ngFor="let city of citiesList" [value]="city.code">{{city.name}}</mat-option><!--Orig [value]="key" -->          
+                  </mat-select>
+            </mat-form-field>
+                              <!--ORIG CODE<mat-option *ngFor="let key of Object.keys(methodDict.items)" [value]="methodDict.items[key]">{{methodDict.items[key]}}</mat-option>--><!--Orig [value]="key" -->          
+
+ 
+            <br>
+            <button mat-button type="submit" mat-flat-button color="primary" [disabled]="false">Search ..</button>
+
+            </form>
+
+
+          </section>
+
+    </mat-card-content>
+    <mat-card-actions>
+
+    </mat-card-actions>
+</mat-card>

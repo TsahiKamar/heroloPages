@@ -1,0 +1,27 @@
+/* רווחים בין השדות */
+.mat-form-field + .mat-form-field/*,
+.mat-raised-button */{
+  margin-left: 8px;
+}
+
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-container > * {
+    width: 100%;
+  }
+
+
+/*Mat Card */
+  .example-card {
+    max-width: 600px;
+    font-size: 12px;
+  }
+
+
+  .example-card {
+        background-color: gainsboro; /* slategray; */
+      }
