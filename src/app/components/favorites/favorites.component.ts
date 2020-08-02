@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./favorites.component.css']
 })
 export class FavoritesComponent implements OnInit {
+  temp:number;
 
   constructor(private router: Router,private route: ActivatedRoute) { }
 
