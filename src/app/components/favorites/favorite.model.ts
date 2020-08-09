@@ -1,8 +1,8 @@
 export class Favorite{
     num:number;
-    ID:string;//number;
+    ID:string;
     name: string;
-    currentWeather: any; //number 
+    currentWeather: any;  
 }
 
 

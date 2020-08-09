@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatButton } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WeatherDetailsService } from './weather-details.service';
-//import { Combo } from './Models/combo.model';
 import { Position } from './Models/position.model';
 import { CurrentConditions } from './Models/currentConditions.model';
 import { Forecast } from './Models/forecast.model';
@@ -23,18 +22,23 @@ import { FavoriteAdd, FavoriteRemove } from '../favorites/favorite.actions';
   templateUrl: './wheather-details.component.html',
   styleUrls: ['./wheather-details.component.css']
 })
+
+
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
- 
-  ApiKey = "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//ORIG "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; sakyk1
-
+  ApiKey ="m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF"; //"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//ORIG "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; sakyk1
+  //rona "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
+  //rona 1 m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF
+  message: string = "" ;
 
   todayDate:string;
   todayDay:string;
   days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
  
   key: string = "";
-  currentCity:string = 'Tel Aviv';
+  currentCity : string = 'Tel Aviv';
+  favoriteCity:string= "";
+  favoriteKey:string = "";
 
   //currentCondition
   weatherText: string;
@@ -65,31 +69,34 @@ export class WheatherDetailsComponent implements OnInit {
 
   weatherSearchForm = new FormGroup({
     city: new FormControl(this.currentCity,Validators.required)
-  
   });
 
   constructor(private http: HttpClient,private router: Router,private route: ActivatedRoute,private weatherDetailsService: WeatherDetailsService,private shareDataService:SharedDataService,private sharedService:SharedService, private store: Store<{ favorites: Favorite[] }>) {    
     this.favorites = store.pipe(select('favorites')); 
-      
-    
   
-    //orig
-    // //Send data to add favorite
-    // this.sharedService.setData('currentWeather',this.tempature);
-    // //this.sharedService.setData('ID',this.key);
-    //this.sharedService.setData('name',this.GetControlValue(this.weatherSearchForm,'city'));
-    //this.sharedService.setData('name',this.currentCity);
-
      // //Send data to add favorite
      this.sharedService.setData('currentWeather',this.temperature);
-     // //this.sharedService.setData('ID',this.key);
-     //this.sharedService.setData('name',this.GetControlValue(this.weatherSearchForm,'city'));
-  
-      this.sharedService.setData('name',this.currentCity);
- 
+     
+     this.sharedService.setData('name',this.currentCity);
+
+    //get data from favorite grid
+    this.favoriteCity = this.sharedService.getDataValue('city');
+    this.favoriteKey = this.sharedService.getDataValue('key');
+
+    console.log('weather details get favorite city :' + this.favoriteCity);
+    if (this.favoriteCity != null && this.favoriteCity != undefined && this.favoriteCity != "")
+    {
+      this.weatherSearchForm.controls['city'].setValue(this.favoriteCity);
+      this.currentCity = this.favoriteCity;
+      
+      this.key = this.favoriteKey;
+      this.fiveDaysForcastObs(this.key);
+      this.currentConditionsObs(this.key);
+    }
   }
 
   ngOnInit() {
+
     console.log('favKey' + this.favKey);
 
     this.favorites.pipe( 
@@ -118,7 +125,8 @@ export class WheatherDetailsComponent implements OnInit {
    {
       console.log('favArr[0].num : ' + this.favArr[0].num);
    }
-
+   
+   //Index for add to favorite
    this.favorites.pipe( 
     map(arr =>
        this.favArr = arr.filter( r => r.num > 0 )
@@ -137,58 +145,18 @@ export class WheatherDetailsComponent implements OnInit {
    }
  });
 
-
     //Send data to add favorite
     this.sharedService.setData('currentWeather',this.tempature);
-    //this.sharedService.setData('ID',this.key);
     this.sharedService.setData('name',this.GetControlValue(this.weatherSearchForm,'city'));
 
     this.todayDate = new Date().toLocaleDateString();
 
     var d = new Date();
-    this.todayDay = this.days[d.getDay()];
-
-    var f= this.f;
-    const ApiKey = "p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//ORIG "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; sakyk1
+    this.todayDay = this.days[d.getDay()];    
     
-    
-    //TEMP REMARK 
-    // var q = this.weatherSearchForm.get('city').value;//this.currentCity;
-    // const params = new HttpParams({fromObject: {apikey: ApiKey,q}}); 
-    // this.weatherSearchForm.get('city')
-    // .valueChanges
-    // .pipe(
-    //   debounceTime(500),
-    //   tap(() => {
-    //     this.errorMsg = "";
-    //     this.autocompletes = [];
-    //     this.isLoading = true;
-    //   }),
-    //   switchMap(value => this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
-    //     .pipe(
-    //       finalize(() => {
-    //         this.isLoading = false
-    //       }),
-    //     )
-    //   )
-    // )
-    // .subscribe(data => {
-    //   if (data == undefined) { //data['Search'] == undefined) {
-    //     //this.errorMsg = data['Error'];
-    //     this.autocompletes = [];
-    //   } else {
-    //     this.errorMsg = "";
-    //     this.autocompletes = data;//data['Search'];
-    //   }
-
-    //   console.log(this.autocompletes);
-    // });
-
+  
     if (this.currentCity == 'Tel Aviv')
     {
-      //TEMP TEMP TEMP
-      //this.autocompletes = this.weatherDetailsService.locationAutocomplete(this.currentCity);
-
        //Tel Aviv - Default
        const lat = 32.109333;
        const lng =  34.855499;
@@ -202,37 +170,43 @@ export class WheatherDetailsComponent implements OnInit {
      this.weatherDetailsService.geoPosition(`${lat},${lng}`).subscribe(data => {
       console.log('Geoposition client data:' + JSON.stringify(data)); 
       this.key = data;
-      this.currentConditionsObs(this.key);
-      //this.fiveDaysForcastObs(this.key);
+      if (this.key != undefined && this.key != null && this.key !="")
+      {
+        this.currentConditionsObs(this.key);
+        this.fiveDaysForcastObs(this.key);
+      }
+
      });
     }
     catch(e)
     {
+      this.message = "geoPosition service error";
       console.log('geoPosition client failed ! exception :' + e);
     }
    }
 
  public locationAutocomplete(q:string):any {
-  var response = this.weatherDetailsService.locationAutocomplete(q); //currentWeatherSearch
+  var response = this.weatherDetailsService.locationAutocomplete(q); 
   return response; 
  }
   
-  // public currentconditions(locationKey:string): any{
-  //   let response :CurrentConditions[]; 
-  //   try {
+  public currentconditions(locationKey:string): any{
+    let response :CurrentConditions[]; 
+    try {
       
-  //     response = this.weatherDetailsService.currentconditions(locationKey);
-  //     this.temperature = response[0].Temperature.Metric.Value;
-  //     this.weatherText = response[0].WeatherText;
-  //     this.weatherIcon = response[0].WeatherIcon;
+      response = this.weatherDetailsService.currentconditions(locationKey);
+      this.temperature = response[0].Temperature.Metric.Value;
+      this.weatherText = response[0].WeatherText;
+      this.weatherIcon = response[0].WeatherIcon;
 
  
-  //   }
-  //   catch(e){
-  //     console.log('currentconditions client failed ! exception :' + e);
-  //   }
-  //   return response;
-  // }
+    }
+    catch(e){
+      this.message = "currentconditions service error" ;//+ e;
+      console.log('currentconditions client failed ! exception :' + e);
+    }
+    return response;
+  }
   
   public currentConditionsObs(locationKey:string): any{
     try {
@@ -246,22 +220,23 @@ export class WheatherDetailsComponent implements OnInit {
    }
    catch(e)
    {
+     this.message = 'Current Conditions Service error ! ' + e;
      console.log('currentConditionsObs client failed ! exception :' + e);
    }
   }
 
-  // public fiveDaysForcast(locationKey:string){
-  //   var response: Forecast[]; 
-  //   try {
-  //     response = this.weatherDetailsService.fiveDaysForecasts(locationKey)
-  //     this.forecasts = response;
-  //       console.log('5days client forecasts :' + JSON.stringify(this.forecasts));
+  public fiveDaysForcast(locationKey:string){
+    var response: Forecast[]; 
+    try {
+      response = this.weatherDetailsService.fiveDaysForecasts(locationKey)
+      this.forecasts = response;
+        console.log('5days client forecasts :' + JSON.stringify(this.forecasts));
       
-  //   }
-  //   catch(e){
-  //     console.log('fiveDaysForecasts client failed ! exception :' + e);
-  //   }
-  // }
+    }
+    catch(e){
+      console.log('fiveDaysForecasts client failed ! exception :' + e);
+    }
+  }
   
 
   public fiveDaysForcastObs(locationKey:string){
@@ -273,6 +248,8 @@ export class WheatherDetailsComponent implements OnInit {
    }
    catch(e)
    {
+    this.message = 'Five Days Forcast Service error ! ' + e;
+ 
      console.log('fiveDaysForcastObs client failed ! exception :' + e);
    }
   }
@@ -285,7 +262,7 @@ export class WheatherDetailsComponent implements OnInit {
   go() {
     if (this.key != null && this.key!="" && this.key!=undefined){
       this.currentConditionsObs(this.key);
-      //this.fiveDaysForcastObs(this.key);     
+      this.fiveDaysForcastObs(this.key);     
     }
   }
 
@@ -296,6 +273,8 @@ export class WheatherDetailsComponent implements OnInit {
       this.IsVisible = false; 
     }
     catch(e){
+      this.message = 'Location Autocomplete Service error ! ' + e;
+
       console.log('locationAutocomplete client failed ! exception :' + e);
     }
   }
@@ -305,11 +284,9 @@ export class WheatherDetailsComponent implements OnInit {
     console.log('autocomplete selection key :' + key);
     if (this.key != undefined && this.key != null && this.key !="")
     {  
-       console.log('autocompleteSelection with key!');
        this.currentCity = this.weatherSearchForm.get('city').value;       
        this.currentConditionsObs(this.key);
-       //this.fiveDaysForcastObs(this.key); 
-
+       this.fiveDaysForcastObs(this.key); 
        this.shareDataService.changeMessage(this.key);
     }
   }
@@ -320,8 +297,8 @@ export class WheatherDetailsComponent implements OnInit {
   }
 
   onChangeEvent(searchValue: string) {
-    console.log('onChangeEvent ..');
-    this.IsVisible = false;
+    console.log('onChangeEvent searchValue :' + searchValue);
+    this.color = "primary";
     var q = searchValue;
     const params = new HttpParams({fromObject: {apikey: this.ApiKey,q}}); 
     this.weatherSearchForm.get('city')
@@ -329,7 +306,7 @@ export class WheatherDetailsComponent implements OnInit {
     .pipe(
       debounceTime(500),
       tap(() => {
-        this.errorMsg = "";
+        this.message = "";
         this.autocompletes = [];
         this.isLoading = true;
       }),
@@ -343,9 +320,13 @@ export class WheatherDetailsComponent implements OnInit {
     )
     .subscribe(data => {
       if (data == undefined) { 
+        this.message = data['Error'];
+        //this.message = "Error autocomplete response data undefined";
+        alert(this.message);
+
         this.autocompletes = [];
       } else {
-        this.errorMsg = "";
+        this.message = "";
         this.autocompletes = data;
       }
 
@@ -356,16 +337,17 @@ export class WheatherDetailsComponent implements OnInit {
   }
 
   onKeyUpEvent(searchValue:string){
-    console.log('onKeyup ..');
-    this.IsVisible = false;
-    var q = searchValue;//this.weatherSearchForm.get('city').value;//this.currentCity;
+    console.log('onKeyup searchValue :' + searchValue);
+    this.color = "primary";
+
+    var q = searchValue;
     const params = new HttpParams({fromObject: {apikey: this.ApiKey,q}}); 
     this.weatherSearchForm.get('city')
     .valueChanges
     .pipe(
       debounceTime(500),
       tap(() => {
-        this.errorMsg = "";
+        this.message = "";
         this.autocompletes = [];
         this.isLoading = true;
       }),
@@ -379,9 +361,11 @@ export class WheatherDetailsComponent implements OnInit {
     )
     .subscribe(data => {
       if (data == undefined) { 
+        this.message = data['Error'];
+        //this.message = "Error  autocomplete response data undefined";
         this.autocompletes = [];
       } else {
-        this.errorMsg = "";
+        this.message = "";
         this.autocompletes = data;
 
       }
@@ -402,7 +386,7 @@ export class WheatherDetailsComponent implements OnInit {
   {
     if (this.favArr.length > 0 )
     {
-      indx = this.favArr[0].num -1;
+      indx = this.favArr[0].num;
     }
     this.removeFavorite(indx);
   }
@@ -420,16 +404,7 @@ export class WheatherDetailsComponent implements OnInit {
 }
 
 
-childToParent(favSel){ //(name){
-  this.key = favSel.key;//name;
-  this.currentCity = favSel.city;
-  //console.log('selected favorite key :' + name);
-  console.log('favSel :' + JSON.stringify(favSel));
-  this.go();
-}
-
 AddFavorite(index:number) { 
-
   const favorite = new Favorite(); 
   favorite.num = index +1;
   favorite.name = this.currentCity;

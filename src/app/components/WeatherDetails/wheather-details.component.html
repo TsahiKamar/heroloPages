@@ -1,34 +1,20 @@
-<!--REMARK <p>Favorite selected {{favoriteSelectedCity}}</p>-->
 
 <!--THIS IS FOR THE CHILDREN-->
 <router-outlet>
 </router-outlet>
-
-
-   <!--<h2>Im the father {{currentCity}}</h2>-->
-    <!--<app-favorites
-      [currentCity]="currentCity" [temperature1]="temperature" [ID]="key" [hidden]="false">
-    </app-favorites>-->
- <!-- [temperature1]="temperature" [ID]="key"-->
- 
- <!--<app-favorites 
- [currentCity]="currentCity" [temperature]="temperature" [ID]="key" [hidden]="false">
-</app-favorites> -->
 
 <app-favorites [currentCity]="currentCity" [ID]="key" (childToParent)="childToParent($event)" [hidden]="true"></app-favorites>
 
 
  <app-favoriteAdd 
  [currentCity]="currentCity" [ID]="ID" [temperature]="temperature" [hidden]="true"></app-favoriteAdd>
-<!-- [temperature]="temperature" [ID]="key"-->
-<!--orig [currentCity]="currentCity"-->
-
 
 <mat-card class="example-card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title>Weather Details - {{currentCity}}</mat-card-title>
-      <mat-card-subtitle></mat-card-subtitle>
+      <mat-card-subtitle>{{message}}
+      </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
 
@@ -47,13 +33,12 @@
     
                         <ng-container *ngIf="!isLoading">
     
-                          <mat-option *ngFor="let autocomplete of autocompletes" [value]="autocomplete.LocalizedName" (click)="autocomSelection(autocomplete.Key)"><!--ORIG -[value]="autocomplete.LocalizedName-->
+                          <mat-option *ngFor="let autocomplete of autocompletes" [value]="autocomplete.LocalizedName" (click)="autocomSelection(autocomplete.Key)">
                      
                             <span><b>{{autocomplete.LocalizedName}}</b></span>
                           </mat-option>
                         </ng-container>
                         
-
                       </mat-autocomplete>
                     </mat-form-field>            
                     <br>            
@@ -63,15 +48,13 @@
        
             
             <br>
-            <button mat-button type="submit" mat-flat-button color="primary">Go</button>
+            <!--<button mat-button type="submit" mat-flat-button color="primary">Go</button>-->
             </form>
 
             <br>
             <button mat-button mat-flat-button color="{{color}}" [disabled]="false" (click)="goToFavorites()">
               <mat-icon>favorite</mat-icon>
             </button>            
-            
-<!---->
 
   
           </section>
@@ -123,10 +106,14 @@
           
           </ng-container>
 
+ 
+
     </mat-card-content>
     <mat-card-actions>
 
     </mat-card-actions>
 </mat-card>
+<pre>{{message}}</pre>
+
 
 

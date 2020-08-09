@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import {FavoriteRemove} from '../favorites/favorite.actions';
 import { FavSel } from '../WeatherDetails/Models/favSel.model';
+import { SharedService } from 'src/app/services/shared.service';
  
 
 @Component({
@@ -16,16 +17,11 @@ import { FavSel } from '../WeatherDetails/Models/favSel.model';
 })
 export class FavoritesComponent {
 @Input('currentCity') selectedCity:string;
-//@Input('key') ID:string;
-//@Input('temperature') temperature1:number;
-
-@Output() childToParent = new EventEmitter<FavSel>(); //<String>();
-
+@Output() childToParent = new EventEmitter<FavSel>(); 
 
 favSelectedID:number;
 favSelectedCityName:string;
 favSelectedTemperature:number;
-
   
 favorites: Observable<Favorite[]>;
 displayedColumns: string[] = ['num','ID','name','currentWeather'];
@@ -33,7 +29,7 @@ dataSource: Observable<Favorite[]>;
 @ViewChild(MatTable,{static:true}) table: MatTable<any>;
  
 
-constructor(private router: Router,private route: ActivatedRoute,private store: Store<{ favorites: Favorite[] }>) { 
+constructor(private router: Router,private route: ActivatedRoute,private store: Store<{ favorites: Favorite[] }>,private sharedService:SharedService) { 
   this.favorites = store.pipe(select('favorites')); 
 }
 
@@ -45,18 +41,14 @@ constructor(private router: Router,private route: ActivatedRoute,private store: 
 
 
   onRowClicked(row:any){
-    console.log('row selected ..');
-    console.log('table selected row City :' + row.name);
-    //this.favSelectedCityName = row.name;
-    //this.favSelectedID = row.ID;
-    //this.favSelectedTemperature = row.currentWeather;
-
     let favSel = new FavSel();
     favSel.key = row.ID;
     favSel.city = row.name;
     console.log('Child favSel :' + JSON.stringify(favSel));
     
-    this.childToParent.emit(favSel);//row.ID);
+     // //Send data to add favorite
+     this.sharedService.setData('city',row.name);
+     this.sharedService.setData('key',row.ID);
 
     this.router.navigate(['/weatherDetails']);
   }

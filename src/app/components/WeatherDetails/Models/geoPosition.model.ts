@@ -30,7 +30,7 @@ export class GeoPosition {
     Name: string,
     GmtOffset: number,
     IsDaylightSaving: boolean,
-    NextOffsetChange: string  //? //"2020-10-24T23:00:00Z"
+    NextOffsetChange: string 
   };
   GeoPosition: {
     Latitude: number,

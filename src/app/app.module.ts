@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { WheatherDetailsComponent } from './components/WeatherDetails/wheather-details.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
-import { FavoriteAddComponent } from './components/favorites/favoriteAdd/favoriteAdd.component';
+//import { FavoriteAddComponent } from './components/favorites/favoriteAdd/favoriteAdd.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -134,8 +134,8 @@ import {
     MatTooltipModule,
     MatTreeModule
   ],
-  declarations: [],//ORIG TEMP REMARK[FavoriteAddComponent],
-  imports: [StoreModule.forRoot(reducers, { //?
+  declarations: [],
+  imports: [StoreModule.forRoot(reducers, { 
       metaReducers,
       runtimeChecks: {
         strictStateImmutability: true,
@@ -153,8 +153,7 @@ export class MaterialModule {}
     AppComponent,
     HeaderComponent,
     WheatherDetailsComponent,
-    FavoritesComponent,
-    FavoriteAddComponent
+    FavoritesComponent
   ],
   imports: [
     HttpClientModule,

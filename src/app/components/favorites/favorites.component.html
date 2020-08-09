@@ -1,4 +1,3 @@
-<!--<p>favorites works! {{selectedCity}}</p>--> <!--From Parent-->
 
 <!--THIS IS FOR THE CHILDREN-->
 <router-outlet>
@@ -23,14 +22,10 @@
 <ul class="favorites">
   <li *ngFor="let favorite of favorites | async; let i=index">
     <span >{{i+1}}.</span><span> {{favorite.name}} </span>
-    <button mat-button mat-flat-button color="primary" (click)="removeFavorite(i)">Remove</button><!--orig i-->
+    <button mat-button mat-flat-button color="primary" (click)="removeFavorite(i)">Remove</button>
 
   </li>
 </ul>
-<!--ORIG<button style="float: right" (click)="removeFavorite(i)">Remove</button>-->
-
-
-
 
  <table mat-table [dataSource]="dataSource" matSort matSortActive="num" class="mat-elevation-z8">
 
