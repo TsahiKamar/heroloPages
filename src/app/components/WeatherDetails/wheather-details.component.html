@@ -3,11 +3,15 @@
 <router-outlet>
 </router-outlet>
 
-<app-favorites [currentCity]="currentCity" [ID]="key" (childToParent)="childToParent($event)" [hidden]="true"></app-favorites>
+<app-favorites [currentCity]="currentCity" [ID]="key" [hidden]="true"></app-favorites><!--(childToParent)="childToParent($event)"-->
 
+
+ <!-- <app-favoriteAdd 
+ [currentCity]="currentCity" [ID]="ID" [temperature]="temperature" [hidden]="true"></app-favoriteAdd> -->
 
  <app-favoriteAdd 
- [currentCity]="currentCity" [ID]="ID" [temperature]="temperature" [hidden]="true"></app-favoriteAdd>
+ [currentCity]="currentCity" [temperature]="temperature" [hidden]="true"></app-favoriteAdd>
+
 
 <mat-card class="example-card">
     <mat-card-header>
@@ -27,7 +31,7 @@
                       <mat-label>City</mat-label>
                       <input matInput placeholder="City" aria-label="State" [matAutocomplete]="auto" formControlName="city" pattern="[a-zA-Z ]*" (input)="onCityChange($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)" (change)="onChangeEvent($event.target.value)"><!--(change)="onChangeEvent($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)"-->
 
-                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                        <mat-autocomplete #auto="matAutocomplete"><!--[displayWith]="displayFn"-->
                         
                         <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
     
