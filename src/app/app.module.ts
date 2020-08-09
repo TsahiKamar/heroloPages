@@ -1,7 +1,10 @@
+import { StoreModule } from '@ngrx/store'; 
+import { reducers, metaReducers } from './reducers';
+import { FavoriteReducer } from './components/favorites/favorite.reducer';
+
 import { BrowserModule } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-//import { NgModule } from '@angular/core';
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
@@ -11,10 +14,26 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { WheatherDetailsComponent } from './components/WeatherDetails/wheather-details.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
+import { FavoriteAddComponent } from './components/favorites/favoriteAdd/favoriteAdd.component';
+
 import { HttpClientModule } from '@angular/common/http';
 
-
 import { WeatherDetailsService } from './components/WeatherDetails/weather-details.service';
+import { SharedDataService } from './services/sharedData.service';
+import { SharedService } from './services/shared.service';
+
+
+import {A11yModule} from '@angular/cdk/a11y';
+import {BidiModule} from '@angular/cdk/bidi';
+import {ObserversModule} from '@angular/cdk/observers';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {PlatformModule} from '@angular/cdk/platform';
+import {PortalModule} from '@angular/cdk/portal';
+import {CdkStepperModule} from '@angular/cdk/stepper';
+import {CdkTableModule} from '@angular/cdk/table';
+import {CdkTreeModule} from '@angular/cdk/tree';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
 
 //Material
 import {
@@ -54,6 +73,7 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatTreeModule
+
 } from '@angular/material';
 
 
@@ -64,6 +84,18 @@ import {
 */
 @NgModule({
   exports: [
+    // CDK
+    A11yModule,
+    BidiModule,
+    ObserversModule,
+    OverlayModule,
+    PlatformModule,
+    PortalModule,
+    CdkStepperModule,
+    CdkTableModule,
+    CdkTreeModule,
+    DragDropModule,
+
     // Material
     MatAutocompleteModule,
     MatBadgeModule,
@@ -102,7 +134,14 @@ import {
     MatTooltipModule,
     MatTreeModule
   ],
-  declarations: [],
+  declarations: [],//ORIG TEMP REMARK[FavoriteAddComponent],
+  imports: [StoreModule.forRoot(reducers, { //?
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true
+      }
+    })],
 })
 export class MaterialModule {}
 
@@ -114,7 +153,8 @@ export class MaterialModule {}
     AppComponent,
     HeaderComponent,
     WheatherDetailsComponent,
-    FavoritesComponent
+    FavoritesComponent,
+    FavoriteAddComponent
   ],
   imports: [
     HttpClientModule,
@@ -123,11 +163,13 @@ export class MaterialModule {}
     AppRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forRoot({ favorites: FavoriteReducer }) 
+
   ],
   exports:[],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [WeatherDetailsService],
+  providers: [WeatherDetailsService,SharedDataService,SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

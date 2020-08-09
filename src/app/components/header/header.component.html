@@ -1,17 +1,20 @@
-<p>header works!</p>
+<!DOCTYPE html>
+<html>
+   <header>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   </header>
+<body>
+  
+  <mat-toolbar color="primary">
+    <button mat-icon-button><mat-icon>menu</mat-icon></button>
+    <button mat-button routerLink="/weatherDetails">Home</button>
+    <button mat-button routerLink="/favorites">Favorites</button>
 
-<a [routerLink]="['/weatherDetails']">
-    link to Weather Details Component
-</a>
+    <!--<button mat-button routerLink="/favoriteAdd">Favorite Add</button>-->
 
-<!--<section>
-    <div class="example-label">Basic</div>
-    <div class="example-button-row">
-      <button mat-button>Basic</button>
-      <button mat-button color="primary">Primary</button>
-      <button mat-button color="accent">Accent</button>
-      <button mat-button color="warn">Warn</button>
-      <button mat-button disabled>Disabled</button>
-      <a mat-button href="https://www.google.com/" target="_blank">Link</a>
-    </div>
-  </section>-->
+  </mat-toolbar>
+
+
+
+</body>
+</html>
