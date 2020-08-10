@@ -26,9 +26,11 @@ import { FavoriteAdd, FavoriteRemove } from '../favorites/favorite.actions';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey ="ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; //"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//ORIG "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; sakyk1
-  //rona "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
-  //rona 1 m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF
+  ApiKey ="ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; 
+  //"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";
+  //"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
+  //3 "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
+  //4 m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF
   message: string = "" ;
 
   todayDate:string;
@@ -36,9 +38,11 @@ export class WheatherDetailsComponent implements OnInit {
   days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
  
   key: string = "";
-  currentCity : string = 'Tel Aviv';
+  currentCity : string ="Tel Aviv";
+  selectedCity: string = "Tel Aviv";
   favoriteCity:string= "";
   favoriteKey:string = "";
+  favoriteNum:number;
 
   //currentCondition
   weatherText: string;
@@ -62,16 +66,18 @@ export class WheatherDetailsComponent implements OnInit {
 
   favorites: Observable<Favorite[]>;  
   existInFavorites: boolean = false;
-  btnTitle:string="Add";
-  color:string = "primary";
+  color:string = "";//"primary";
   favArr = []; //Filter array
   addIndex:number= 0;
+  deleteIndex:number=0;
 
   weatherSearchForm = new FormGroup({
-    city: new FormControl(this.currentCity,Validators.required)
+    city: new FormControl(this.selectedCity,Validators.required)
   });
 
+
   constructor(private http: HttpClient,private router: Router,private route: ActivatedRoute,private weatherDetailsService: WeatherDetailsService,private shareDataService:SharedDataService,private sharedService:SharedService, private store: Store<{ favorites: Favorite[] }>) {    
+    
     this.favorites = store.pipe(select('favorites')); 
   
      // //Send data to add favorite
@@ -82,6 +88,7 @@ export class WheatherDetailsComponent implements OnInit {
     //get data from favorite grid
     this.favoriteCity = this.sharedService.getDataValue('city');
     this.favoriteKey = this.sharedService.getDataValue('key');
+    this.favoriteNum = this.sharedService.getDataValue('num');
 
     console.log('weather details get favorite city :' + this.favoriteCity);
     if (this.favoriteCity != null && this.favoriteCity != undefined && this.favoriteCity != "")
@@ -96,9 +103,18 @@ export class WheatherDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+  
 
-    console.log('favKey' + this.favKey);
+    if (this.selectedCity == 'Tel Aviv')
+    {
+       //Tel Aviv - Default
+       const lat = 32.109333;
+       const lng =  34.855499;
+       this.getLocation(lat,lng);
+    }
 
+    console.log('key :' + this.key);
+ 
     this.favorites.pipe( 
       map(arr =>
          this.favArr = arr.filter( r => r.ID == this.key )
@@ -108,23 +124,18 @@ export class WheatherDetailsComponent implements OnInit {
      console.log('Search results:', results);
      if (results.length > 0)
      {
-       console.log('Exist in favorites !');
+       console.log('Exist in favorites ! index : ' + this.favArr[0].num);
+       this.deleteIndex = this.favArr[0].num;
        this.existInFavorites = true;
-       this.btnTitle = "Remove";
        this.color = "warn";
      }
      else
      {
        console.log('Not exist in favorites !');
        this.existInFavorites = false;
-       this.btnTitle = "Add";
        this.color = "primary";
      }
    });
-   if (this.favArr.length > 0)
-   {
-      console.log('favArr[0].num : ' + this.favArr[0].num);
-   }
    
    //Index for add to favorite
    this.favorites.pipe( 
@@ -145,6 +156,7 @@ export class WheatherDetailsComponent implements OnInit {
    }
  });
 
+
     //Send data to add favorite
     this.sharedService.setData('currentWeather',this.tempature);
     this.sharedService.setData('name',this.GetControlValue(this.weatherSearchForm,'city'));
@@ -155,13 +167,6 @@ export class WheatherDetailsComponent implements OnInit {
     this.todayDay = this.days[d.getDay()];    
     
   
-    if (this.currentCity == 'Tel Aviv')
-    {
-       //Tel Aviv - Default
-       const lat = 32.109333;
-       const lng =  34.855499;
-       this.getLocation(lat,lng);
-    }
      
   }
 
@@ -284,7 +289,8 @@ export class WheatherDetailsComponent implements OnInit {
     console.log('autocomplete selection key :' + key);
     if (this.key != undefined && this.key != null && this.key !="")
     {  
-       this.currentCity = this.weatherSearchForm.get('city').value;       
+       this.currentCity = this.weatherSearchForm.get('city').value;   
+       this.selectedCity =  this.weatherSearchForm.get('city').value;   
        this.currentConditionsObs(this.key);
        this.fiveDaysForcastObs(this.key); 
        this.shareDataService.changeMessage(this.key);
@@ -293,6 +299,7 @@ export class WheatherDetailsComponent implements OnInit {
 
   onCityChange(newValue:string){
     this.currentCity = newValue;
+    this.selectedCity = newValue;
     console.log('onCityChange :' + newValue);
   }
 
@@ -376,20 +383,18 @@ export class WheatherDetailsComponent implements OnInit {
   }
 
  goToFavorites(){
-  let indx = 0;
-  
-  if (this.color == "primary")
+
+  if (this.existInFavorites == false || this.color == 'primary')
   {
     this.AddFavorite(this.addIndex); 
+    this.existInFavorites = true;
   }
   else
   {
-    if (this.favArr.length > 0 )
-    {
-      indx = this.favArr[0].num;
-    }
-    this.removeFavorite(indx);
+    this.removeFavorite(this.deleteIndex);
+    this.existInFavorites = false;
   }
+  
   this.router.navigate(['/favorites']);
  }
 

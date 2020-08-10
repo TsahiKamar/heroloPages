@@ -16,10 +16,12 @@ export class WeatherDetailsService {
  
   private CurrentConditions$ = new Subject<CurrentConditions[]>();
   private forcasts$ = new Subject<Forecast[]>();
-  //rona JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM
-  //rona1 "m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF"
-  ApiKey = "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//ORIG "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; sakyk1
+  //3 JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM
+  //4 "m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF"
+  //"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   //"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7"
+
+  ApiKey = "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";
   
   constructor(private http: HttpClient) { }
 // http://dataservice.accuweather.com/currentconditions/v1/{locationKey}
@@ -31,7 +33,7 @@ export class WeatherDetailsService {
     const params = new HttpParams({fromObject: {apikey: this.ApiKey}}); 
     
     var locationKey = q;
-    const url = `https://dataservice.accuweather.com/currentconditions/v1/${locationKey}`;//key //or locationKey
+    const url = `https://dataservice.accuweather.com/currentconditions/v1/${locationKey}`;
   
      this.http.get<CurrentConditions[]>(url,{params})
      .subscribe(data => {
@@ -46,7 +48,7 @@ export class WeatherDetailsService {
      
     var locationKey = q;
 
-    const url = `https://dataservice.accuweather.com/currentconditions/v1/${locationKey}`;//key //or locationKey
+    const url = `https://dataservice.accuweather.com/currentconditions/v1/${locationKey}`;
   
     this.http.get<CurrentConditions[]>(url,{params})
     .subscribe(data => this.CurrentConditions$.next(data));

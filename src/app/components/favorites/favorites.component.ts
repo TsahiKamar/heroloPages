@@ -44,11 +44,11 @@ constructor(private router: Router,private route: ActivatedRoute,private store: 
     let favSel = new FavSel();
     favSel.key = row.ID;
     favSel.city = row.name;
-    console.log('Child favSel :' + JSON.stringify(favSel));
     
-     // //Send data to add favorite
+     //Send data to add\remove favorite
      this.sharedService.setData('city',row.name);
      this.sharedService.setData('key',row.ID);
+     this.sharedService.setData('num',row.num);
 
     this.router.navigate(['/weatherDetails']);
   }

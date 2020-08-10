@@ -14,7 +14,6 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { WheatherDetailsComponent } from './components/WeatherDetails/wheather-details.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
-//import { FavoriteAddComponent } from './components/favorites/favoriteAdd/favoriteAdd.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
