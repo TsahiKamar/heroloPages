@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatButton } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WeatherDetailsService } from './weather-details.service';
-import { Position } from './Models/position.model';
 import { CurrentConditions } from './Models/currentConditions.model';
 import { Forecast } from './Models/forecast.model';
 import { HttpParams, HttpClient, HttpHeaders } from '@angular/common/http';

@@ -27,7 +27,6 @@ export class WeatherDetailsService {
 // http://dataservice.accuweather.com/currentconditions/v1/{locationKey}
 // http://dataservice.accuweather.com/locations/v1/cities/autocomplete
 // http://dataservice.accuweather.com/forecasts/v1/daily/5day/{locationKey}
-
    public currentconditions(q: string): any {
     var response = new Array<CurrentConditions>();
     const params = new HttpParams({fromObject: {apikey: this.ApiKey}}); 
@@ -38,7 +37,6 @@ export class WeatherDetailsService {
      this.http.get<CurrentConditions[]>(url,{params})
      .subscribe(data => {
        response = data; 
-       console.log('server currentconditions response: ' + JSON.stringify(response));
       });      
       return response;
    }
@@ -78,8 +76,6 @@ export class WeatherDetailsService {
      this.http.get<any>(url,{params})
      .subscribe(data => {
        response = data["DailyForecasts"]; 
-       console.log('5 days server response :' + JSON.stringify(response));
-
       }); 
       return response;
    }
