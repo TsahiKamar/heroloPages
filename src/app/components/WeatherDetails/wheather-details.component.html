@@ -59,14 +59,10 @@
             <button mat-button mat-flat-button color="{{color}}" [disabled]="false" (click)="goToFavorites()">
               <mat-icon>favorite</mat-icon>
             </button>            
-
-  
           </section>
           <p>
           <br>
-
           
-   
           <div class="wrapper" *ngIf="IsVisible">
             <article class="main">
               <h3><em>Today's Weather - {{todayDay}} {{todayDate}}</em></h3>
@@ -84,7 +80,7 @@
           </div>
 
 
-          <h3 *ngIf="forecasts"><em>5 Days Forcast</em></h3>
+          <h3 *ngIf="forecasts"><em>5 Days Forecast</em></h3>
           <br>
           <ng-container *ngFor="let forecast of forecasts">
 
