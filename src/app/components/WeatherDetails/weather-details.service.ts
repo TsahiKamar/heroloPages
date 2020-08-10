@@ -94,7 +94,7 @@ export class WeatherDetailsService {
 
   public geoPosition(q?): Observable<any>{
     const params = new HttpParams({fromObject: {apikey: this.ApiKey,q}});
-    return this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search`,{params})
+    return this.http.get(`https://dataservice.accuweather.com/locations/v1/cities/geoposition/search`,{params})
     .pipe(
         map((geopos: GeoPosition) => geopos.Key)
     )

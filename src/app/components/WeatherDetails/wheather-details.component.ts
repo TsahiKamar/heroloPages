@@ -310,7 +310,7 @@ export class WheatherDetailsComponent implements OnInit {
         this.autocompletes = [];
         this.isLoading = true;
       }),
-      switchMap(value => this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
+      switchMap(value => this.http.get(`https://dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
         .pipe(
           finalize(() => {
             this.isLoading = false
@@ -351,7 +351,7 @@ export class WheatherDetailsComponent implements OnInit {
         this.autocompletes = [];
         this.isLoading = true;
       }),
-      switchMap(value => this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
+      switchMap(value => this.http.get(`https://dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
         .pipe(
           finalize(() => {
             this.isLoading = false
