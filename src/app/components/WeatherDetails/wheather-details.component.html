@@ -29,9 +29,9 @@
 
                     <mat-form-field>
                       <mat-label>City</mat-label>
-                      <input matInput placeholder="City" aria-label="State" [matAutocomplete]="auto" formControlName="city" pattern="[a-zA-Z ]*" (input)="onCityChange($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)" (change)="onChangeEvent($event.target.value)"><!--(change)="onChangeEvent($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)"-->
+                      <input matInput placeholder="City" aria-label="State" [matAutocomplete]="auto" formControlName="city" pattern="[a-zA-Z ]*" (input)="onCityChange($event.target.value)" (keyup)="onKeyUpEvent($event.target.value)" (change)="onChangeEvent($event.target.value)">
 
-                        <mat-autocomplete #auto="matAutocomplete"><!--[displayWith]="displayFn"-->
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"><!--[displayWith]="displayFn"-->
                         
                         <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
     
