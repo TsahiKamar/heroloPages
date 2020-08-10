@@ -26,7 +26,7 @@ import { FavoriteAdd, FavoriteRemove } from '../favorites/favorite.actions';
 
 export class WheatherDetailsComponent implements OnInit {
 @Input('favSelectedID') favKey:string;  
-  ApiKey ="m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF"; //"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//ORIG "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; sakyk1
+  ApiKey ="JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"; //"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//"ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ";//"p2wdfVchBYWwQxaC38tuxk9gmAAaEqn7";//ORIG "ORJR2fX39am8zZgGJyz9Msy6KRRtveEQ"; sakyk1
   //rona "JBeC9zd7kA6K7RsFkOKDhGo3UPEpnZJM"
   //rona 1 m0XQhZB6q0A6ztq0GGWiBJpRRvdDQVXF
   message: string = "" ;
@@ -310,7 +310,7 @@ export class WheatherDetailsComponent implements OnInit {
         this.autocompletes = [];
         this.isLoading = true;
       }),
-      switchMap(value => this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
+      switchMap(value => this.http.get(`//dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
         .pipe(
           finalize(() => {
             this.isLoading = false
@@ -351,7 +351,7 @@ export class WheatherDetailsComponent implements OnInit {
         this.autocompletes = [];
         this.isLoading = true;
       }),
-      switchMap(value => this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
+      switchMap(value => this.http.get(`//dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
         .pipe(
           finalize(() => {
             this.isLoading = false
