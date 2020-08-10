@@ -56,7 +56,7 @@
             </form>
 
             <br>
-            <button mat-button mat-flat-button color="{{color}}" [disabled]="false" (click)="goToFavorites()">
+            <button mat-button mat-flat-button color="{{color}}" [disabled]="! IsVisible" (click)="goToFavorites()">
               <mat-icon>favorite</mat-icon>
             </button>            
           </section>
