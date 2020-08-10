@@ -310,7 +310,7 @@ export class WheatherDetailsComponent implements OnInit {
         this.autocompletes = [];
         this.isLoading = true;
       }),
-      switchMap(value => this.http.get(`//dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
+      switchMap(value => this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
         .pipe(
           finalize(() => {
             this.isLoading = false
@@ -320,8 +320,8 @@ export class WheatherDetailsComponent implements OnInit {
     )
     .subscribe(data => {
       if (data == undefined) { 
-        this.message = data['Error'];
-        //this.message = "Error autocomplete response data undefined";
+        //this.message = data['Error'];
+        this.message = "Error autocomplete response data undefined";
         alert(this.message);
 
         this.autocompletes = [];
@@ -351,7 +351,7 @@ export class WheatherDetailsComponent implements OnInit {
         this.autocompletes = [];
         this.isLoading = true;
       }),
-      switchMap(value => this.http.get(`//dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
+      switchMap(value => this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete`,{params})
         .pipe(
           finalize(() => {
             this.isLoading = false
@@ -361,8 +361,8 @@ export class WheatherDetailsComponent implements OnInit {
     )
     .subscribe(data => {
       if (data == undefined) { 
-        this.message = data['Error'];
-        //this.message = "Error  autocomplete response data undefined";
+        //this.message = data['Error'];
+        this.message = "Error  autocomplete response data undefined";
         this.autocompletes = [];
       } else {
         this.message = "";

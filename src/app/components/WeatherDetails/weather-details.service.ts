@@ -31,9 +31,8 @@ export class WeatherDetailsService {
     const params = new HttpParams({fromObject: {apikey: this.ApiKey}}); 
     
     var locationKey = q;
-    //HEROKU DOESN'T WORK const url = `http://dataservice.accuweather.com/currentconditions/v1/${locationKey}`;//key //or locationKey
-    const url = `//dataservice.accuweather.com/currentconditions/v1/${locationKey}`;//key //or locationKey
-
+    const url = `http://dataservice.accuweather.com/currentconditions/v1/${locationKey}`;//key //or locationKey
+  
      this.http.get<CurrentConditions[]>(url,{params})
      .subscribe(data => {
        response = data; 
@@ -47,9 +46,8 @@ export class WeatherDetailsService {
      
     var locationKey = q;
 
-    //const url = `http://dataservice.accuweather.com/currentconditions/v1/${locationKey}`;//key //or locationKey
-    const url = `//dataservice.accuweather.com/currentconditions/v1/${locationKey}`;//key //or locationKey
-
+    const url = `http://dataservice.accuweather.com/currentconditions/v1/${locationKey}`;//key //or locationKey
+  
     this.http.get<CurrentConditions[]>(url,{params})
     .subscribe(data => this.CurrentConditions$.next(data));
      return this.CurrentConditions$;
@@ -59,8 +57,7 @@ export class WeatherDetailsService {
     var response = new Array<Autocomplete>(); 
     const params = new HttpParams({fromObject: {apikey: this.ApiKey,q}}); 
    
-     //const url = `http://dataservice.accuweather.com/locations/v1/cities/autocomplete`;
-     const url = `//dataservice.accuweather.com/locations/v1/cities/autocomplete`;
+     const url = `http://dataservice.accuweather.com/locations/v1/cities/autocomplete`;
  
      this.http.get<Autocomplete[]>(url,{params})
      .subscribe(data => {
@@ -74,8 +71,7 @@ export class WeatherDetailsService {
     var response = Array<Forecast>();
     const params = new HttpParams({fromObject: {apikey: this.ApiKey}}); 
     
-     //const url = `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`;     
-     const url = `//dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`;     
+     const url = `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`;     
 
      this.http.get<any>(url,{params})
      .subscribe(data => {
@@ -88,8 +84,7 @@ export class WeatherDetailsService {
 
    public fiveDaysForecastsObs(locationKey:string): Observable<Forecast[]> {    
      const params = new HttpParams({fromObject: {apikey: this.ApiKey}}); 
-     //const url = `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`;
-     const url = `//dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`;
+     const url = `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`;
 
      return this.http.get<Forecast[]>(url,{params})
      .pipe(
@@ -99,8 +94,7 @@ export class WeatherDetailsService {
 
   public geoPosition(q?): Observable<any>{
     const params = new HttpParams({fromObject: {apikey: this.ApiKey,q}});
-    //return this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search`,{params})
-    return this.http.get(`//dataservice.accuweather.com/locations/v1/cities/geoposition/search`,{params})
+    return this.http.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search`,{params})
     .pipe(
         map((geopos: GeoPosition) => geopos.Key)
     )
